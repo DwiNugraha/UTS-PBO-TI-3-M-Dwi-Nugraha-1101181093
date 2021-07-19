@@ -19,7 +19,7 @@ Route::group(['middleware' => 'checkSession'], function () {
     Route::get('/list', 'UserController@list');
     Route::get('/add', 'UserController@tambah');
     Route::get('/edit/{id}', 'UserController@edit');
-    Route::get('/contact', 'HomeController@contact');
+    Route::get('/contact', 'ContactController@contact');
     
     
     Route::post('/simpan', 'UserController@simpan');

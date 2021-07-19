@@ -5,12 +5,16 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use App\sysuser;
+use App\sysmenu;
 
 class UserController extends Controller
 {
     
     public function index (Request $request){
-        return view('master.user');
+        $categories = sysmenu::where('sysmenu_id','=','1')
+        ->with('childrenCategories')
+        ->get();
+        return view('master.user',['data_menu'=>$categories]);
     }    
     
     public function list (Request $request){
@@ -23,7 +27,10 @@ class UserController extends Controller
     }
 
     public function tambah (Request $request){
-        return view('master.useradd');
+        $categories = sysmenu::where('sysmenu_id', '=', '0')
+        ->with('childrenCategories')
+        ->get();
+        return view('master.useradd', ['data_menu' => $categories]);
     }
    
     public function simpan (Request $request){
@@ -33,13 +40,19 @@ class UserController extends Controller
         $user->uname = $request->txtuname;
         $user->upass = $request->txtupass;
         $user->save();
-        return view('master.user');
+        $categories = sysmenu::where('sysmenu_id', '=', '0')
+            ->with('childrenCategories')
+            ->get();
+        return view('master.user', ['data_menu' => $categories]);
     }
 
     public function edit (Request $request){
+        $categories = sysmenu::where('sysmenu_id', '=', '0')
+            ->with('childrenCategories')
+            ->get();
         $id = $request->id;
-        $data = sysuser::where('id',$id)->first();
-        return view('master.useredit',['user'=>$data]);
+        $data = sysuser::where('id', $id)->first();
+        return view('master.useredit', ['user' => $data, 'data_menu' => $categories]);
     }
 
     public function update (Request $request){
@@ -52,8 +65,10 @@ class UserController extends Controller
                     'uname' => $request->txtuname,
                     'upass' => $request->txtupass,
                 ]);
-        return view('master.user');
-
+                $categories = sysmenu::where('sysmenu_id', '=', '0')
+                ->with('childrenCategories')
+                ->get();
+            return view('master.user', ['data_menu' => $categories]);
     }
 
 }

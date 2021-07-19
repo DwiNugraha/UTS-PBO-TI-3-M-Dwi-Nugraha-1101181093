@@ -18,7 +18,6 @@
           <a href="{{ asset('') }}" class="d-block">Muhammad Dwi Nugraha</a>
         </div>
       </div>
-
       <!-- Sidebar Menu -->
       <nav class="mt-2">
         <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false">
@@ -30,6 +29,20 @@
               <p>Home</p>
             </a>
           </li>
+          @foreach ($data_menu as $category)
+          <li class="nav-item has-treeview">
+              <a href="#" class="nav-link">
+                <i class="nav-icon fas fa-tachometer-alt"></i>
+                <p>{{ $category->namamenu }}<i class="right fas fa-angle-left"></i>
+                </p>
+              </a>
+              <ul class="nav nav-treeview">
+              @foreach ($category->childrenCategories as $childCategory)
+                  @include('layout.child_category', ['child_category' => $childCategory])
+              @endforeach
+              </ul>
+          </li>
+          @endforeach
           <li class="nav-item has-treeview">
           <a href="#" class="nav-link">
               <i class="nav-icon fas fa-tachometer-alt"></i>

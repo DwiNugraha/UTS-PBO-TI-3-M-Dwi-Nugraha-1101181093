@@ -5,13 +5,17 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use App\sysuser;
+use App\sysmenu;
 
 class HomeController extends Controller
 {
 
     public function index(Request $request)
     {
-        return view('layout.app');
+        $categories = sysmenu::where('sysmenu_id', '=', '0')
+            ->with('childrenCategories')
+            ->get();
+        return view('layout.app', ['data_menu' => $categories]);
     }
     
     public function login(Request $request)
@@ -51,9 +55,5 @@ class HomeController extends Controller
             return redirect('/');
         }
     }
-    
-    public function contact() {
-        return view('layout.contact');
-      }
 
 }
